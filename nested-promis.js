@@ -22,7 +22,7 @@ const getObjectList = () => {
 
          let files = [{ fileNum: 1 }, { fileNum: 2 }, { fileNum: 3 }]
 
-         files = await getFileData(files)
+         files = await recursiveAsyncGetFileData(files, [])
 
          resolve(files)
 
@@ -33,22 +33,30 @@ const getObjectList = () => {
    })
 }
 
-const getFileData = async (files) => {
+const recursiveAsyncGetFileData = (files, result) => {
    return new Promise(async (resolve, reject) => {
+      let file = files.pop()
+      console.log("Pop", file)
 
-      let result = []
+      if (file) {
 
-      await files.forEach(async (file) => {
+         let getFile = await getFileData(file)
+         result.push(getFile)
+         recursiveAsyncGetFileData(files, result)
+      } else resolve(result)
+   })
+}
 
-         console.log("file :", file)
-         await setTimeout(() => {
-            file.data = "Data"
-            result.push(file)
-         }, 3000)
+const getFileData = (file) => {
+   return new Promise((resolve, reject) => {
 
-      })
+      setTimeout(() => {
+         file.data = "Data"
+         console.log("Getting File :", file)
+         resolve(file)
+      }, 3000)
 
-      resolve(result)
+
    })
 }
 
