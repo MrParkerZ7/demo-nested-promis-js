@@ -7,12 +7,10 @@ const main = async () => {
 
    const listNumber = await getObjectList()
 
-   console.log("List Number :", listNumber)
-   console.log("Ended main task")
+   console.log("List Number Instancely :", listNumber)
 
    setTimeout(() => {
-      console.log("Delayu List Number :", listNumber)
-
+      console.log("List Number Delay 5000 :", listNumber)
    }, 5000)
 
 }
@@ -49,7 +47,7 @@ const getFileData = async (files) => {
          }, 3000)
 
       })
-      
+
       resolve(result)
    })
 }
