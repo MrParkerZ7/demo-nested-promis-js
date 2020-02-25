@@ -44,10 +44,10 @@ const recursiveAsyncGetFileData = (files, result) => {
          let getFile = await getFileData(file)
          result.push(getFile)
          console.log("Recursive if Result :", result)
-         await recursiveAsyncGetFileData(files, result)
-         console.log()
-         return result
+         let wait = await recursiveAsyncGetFileData(files, result)
+         resolve(result)
 
+         return result
       } else {
 
          resolve(result)
