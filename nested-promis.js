@@ -8,9 +8,11 @@ const main = async () => {
    const listNumber = await getObjectList()
 
    console.log("List Number Instancely :", listNumber)
+   console.log()
 
    setTimeout(() => {
       console.log("List Number Delay 5000 :", listNumber)
+      console.log()
    }, 5000)
 
 }
@@ -21,12 +23,12 @@ const getObjectList = () => {
       setTimeout(async () => {
 
          let files = [{ fileNum: 1 }, { fileNum: 2 }, { fileNum: 3 }]
-
          files = await recursiveAsyncGetFileData(files, [])
 
          resolve(files)
 
-         console.log("Get Object Resolved")
+         console.log("Get Object Resolved Result :", files)
+         console.log()
 
       }, 3000)
 
@@ -36,14 +38,24 @@ const getObjectList = () => {
 const recursiveAsyncGetFileData = (files, result) => {
    return new Promise(async (resolve, reject) => {
       let file = files.pop()
-      console.log("Pop", file)
-
+      console.log("Recursive Pop", file)
       if (file) {
 
          let getFile = await getFileData(file)
          result.push(getFile)
-         recursiveAsyncGetFileData(files, result)
-      } else resolve(result)
+         console.log("Recursive if Result :", result)
+         await recursiveAsyncGetFileData(files, result)
+         console.log()
+         return result
+
+      } else {
+
+         resolve(result)
+         console.log("Recursive else Result :", result)
+         console.log()
+         return result
+
+      }
    })
 }
 
@@ -52,11 +64,11 @@ const getFileData = (file) => {
 
       setTimeout(() => {
          file.data = "Data"
-         console.log("Getting File :", file)
+         console.log("GetFileData Getting File :", file)
+
          resolve(file)
+         console.log()
       }, 3000)
-
-
    })
 }
 
