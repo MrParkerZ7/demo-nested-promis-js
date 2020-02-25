@@ -3,26 +3,32 @@ const Promise = require('promise');
 
 const main = async () => {
 
-   console.log("Running")
+   console.log("## ##  Main has been started  ## ##")
 
-   const listNumber = await getObjectList()
+   const listFile = await getListObjectFileInfo()
 
-   console.log("List Number Instancely :", listNumber)
+   console.log("## MAIN ##   List File Result Instancely :", listFile)
    console.log()
 
    setTimeout(() => {
-      console.log("List Number Delay 5000 :", listNumber)
+
+      console.log("## MAIN ##   List File Result Delay 5000 :", listFile)
       console.log()
+
    }, 5000)
 
+   console.log("## ##  Main has been ended  ## ##")
+   console.log()
 }
 
-const getObjectList = () => {
+const getListObjectFileInfo = () => {
    return new Promise((resolve, reject) => {
 
       setTimeout(async () => {
 
          let files = [{ fileNum: 1 }, { fileNum: 2 }, { fileNum: 3 }]
+         console.log("Get Object Resolved List File Info :", files)
+
          files = await recursiveAsyncGetFileData(files, [])
 
          resolve(files)
@@ -37,22 +43,29 @@ const getObjectList = () => {
 
 const recursiveAsyncGetFileData = (files, result) => {
    return new Promise(async (resolve, reject) => {
-      let file = files.pop()
+
+      let file = files.shift()
       console.log("Recursive Pop", file)
+      console.log()
+
       if (file) {
 
          let getFile = await getFileData(file)
          result.push(getFile)
-         console.log("Recursive if Result :", result)
-         let wait = await recursiveAsyncGetFileData(files, result)
-         resolve(result)
 
+         console.log("Recursive if Result :", result)
+         await recursiveAsyncGetFileData(files, result)
+
+         resolve(result)
          return result
+
       } else {
 
          resolve(result)
+
          console.log("Recursive else Result :", result)
          console.log()
+
          return result
 
       }
@@ -61,7 +74,6 @@ const recursiveAsyncGetFileData = (files, result) => {
 
 const getFileData = (file) => {
    return new Promise((resolve, reject) => {
-
       setTimeout(() => {
          file.data = "Data"
          console.log("GetFileData Getting File :", file)
