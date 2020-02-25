@@ -11,7 +11,7 @@ const main = async () => {
    console.log("Ended main task")
 
    setTimeout(() => {
-   console.log("Delayu List Number :", listNumber)
+      console.log("Delayu List Number :", listNumber)
 
    }, 5000)
 
@@ -24,9 +24,10 @@ const getObjectList = () => {
 
          let files = [{ fileNum: 1 }, { fileNum: 2 }, { fileNum: 3 }]
 
-         await getFileData(files)
+         files = await getFileData(files)
 
          resolve(files)
+
          console.log("Get Object Resolved")
 
       }, 3000)
@@ -35,16 +36,22 @@ const getObjectList = () => {
 }
 
 const getFileData = async (files) => {
+   return new Promise(async (resolve, reject) => {
 
-   await files.forEach(async (file) => {
+      let result = []
 
-      console.log("file :", file)
-      await setTimeout(() => {
-         file.data = "Data"
-      }, 3000)
+      await files.forEach(async (file) => {
 
+         console.log("file :", file)
+         await setTimeout(() => {
+            file.data = "Data"
+            result.push(file)
+         }, 3000)
+
+      })
+      
+      resolve(result)
    })
-
 }
 
 main()
