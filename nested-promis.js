@@ -26,7 +26,7 @@ const getListObjectFileInfo = () => {
 
       setTimeout(async () => {
 
-         let files = [{ fileNum: 1 }, { fileNum: 2 }, { fileNum: 3 }]
+         let files = [{ fileNum: 1000 }, { fileNum: 2000 }, { fileNum: 3000 }, { fileNum: 2000 }, { fileNum: 1000 }]
          console.log("Get Object Resolved List File Info :", files)
 
          files = await recursiveAsyncGetFileData(files, [])
@@ -46,41 +46,39 @@ const recursiveAsyncGetFileData = (files, result) => {
 
       let file = files.shift()
       console.log("Recursive Pop", file)
-      console.log()
 
       if (file) {
 
-         let getFile = await getFileData(file)
+         let getFile = await getFileData(file, files, result)
          result.push(getFile)
 
          console.log("Recursive if Result :", result)
-         await recursiveAsyncGetFileData(files, result)
 
          resolve(result)
-         return result
-
       } else {
 
          resolve(result)
 
          console.log("Recursive else Result :", result)
          console.log()
-
-         return result
-
       }
    })
 }
 
-const getFileData = (file) => {
+const getFileData = (file, files, result) => {
    return new Promise((resolve, reject) => {
-      setTimeout(() => {
+      setTimeout(async () => {
          file.data = "Data"
+
          console.log("GetFileData Getting File :", file)
+         console.log()
+
+
+         await recursiveAsyncGetFileData(files, result)
 
          resolve(file)
          console.log()
-      }, 3000)
+      }, file.fileNum)
    })
 }
 
